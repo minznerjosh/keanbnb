@@ -64,8 +64,37 @@
     <h4>Resident Info</h4>
     <div class="form-group">
       <label class="checkbox-inline">
-        {{input type="checkbox" id="resident" value="true"}} I am a Resident
+        {{input type="checkbox" id="resident" checked=isResident}} I am a Resident
       </label>
+    </div>
+    {{#if isResident}}
+      <div class="form-group">
+        <label for="id">Student ID</label>
+        <div class="row">
+          <div class="col-md-3">
+            {{input class="form-control" id="id" placeholder="648373"}}
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="building">Building</label>
+        <div class="row">
+          <div class="col-md-3">
+            {{view Ember.Select class="form-control" id="building" contentBinding="buildings"}}
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="room">Room #</label>
+        <div class="row">
+          <div class="col-md-2">
+            {{input class="form-control" id="room" placeholder="601A"}}
+          </div>
+        </div>
+      </div>
+    {{/if}}
+    <div class="form-group">
+      <a href="#" class="btn btn-primary btn-lg">Register</a>
     </div>
   </form>
 </div>

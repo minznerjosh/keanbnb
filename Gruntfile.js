@@ -21,7 +21,8 @@ module.exports = function (grunt) {
     // configurable paths
     var yeomanConfig = {
         app: 'app',
-        dist: 'dist'
+        dist: 'dist',
+        server: 'server'
     };
 
     grunt.initConfig({
@@ -57,6 +58,13 @@ module.exports = function (grunt) {
                     '{.tmp,<%= yeoman.app %>}/styles/{,*/}*.css',
                     '<%= yeoman.app %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}'
                 ]
+            }
+        },
+        express: {
+            livereload: {
+                options: {
+                    script: './app.js'
+                }
             }
         },
         connect: {
@@ -325,7 +333,7 @@ module.exports = function (grunt) {
             'clean:server',
             'concurrent:server',
             'neuter:app',
-            'connect:livereload',
+            'express:livereload',
             'open',
             'watch'
         ]);
