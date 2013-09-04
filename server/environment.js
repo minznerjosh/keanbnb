@@ -4,6 +4,7 @@ module.exports = (function() {
 
   return {
     port: isDev ? 9000 : 80,
-    livereloadPort: isDev ? 35729 : undefined
+    livereloadPort: isDev ? 35729 : undefined,
+    mysql: isDev ? 'mysql://dev:nodejs@localhost/keanbnb' : null
   };
 })();
