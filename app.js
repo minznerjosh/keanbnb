@@ -16,8 +16,6 @@ module.exports = {
 
 app.use(livereloadMiddleware);
 
-console.log(environment.mysql);
-
 app.use(orm.express(environment.mysql, {
   define: function(db, models) {
     models.user = require('./server/models/user.js')(db);
@@ -55,6 +53,8 @@ app.use(orm.express(environment.mysql, {
         ]);
       }
     });
+
+    require('./server/socket_router.js')(db, io);
   }
 }));
 
