@@ -12,7 +12,9 @@ module.exports = function(db) {
     cellPhone: String,
     isResident: Boolean,
     studentId: String,
-    room: String
+    room: String,
+    email: String,
+    password: String
   });
 
   // Relationships

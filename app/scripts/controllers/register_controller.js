@@ -3,6 +3,11 @@
 
   App.RegisterController = Ember.ObjectController.extend({
     // Methods
+    actions: {
+      submitRegistration: function() {
+        this.get('model').save();
+      }
+    },
 
     // Properties
     buildings: function() {

@@ -2,6 +2,8 @@
   "name": "keanbnb",
   "version": "0.0.0",
   "dependencies": {
+    "q": "0.9.x",
+    "inflection": "1.2.x",
     "mysql": "2.0.x",
     "express": "3.3.x",
     "socket.io": "0.9.x",

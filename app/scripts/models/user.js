@@ -15,6 +15,8 @@
     isResident: DS.attr('boolean'),
     studentId: DS.attr('string'),
     building: DS.belongsTo('building'),
-    room: DS.attr('string')
+    room: DS.attr('string'),
+    email: DS.attr('string'),
+    password: DS.attr('string')
   });
 })(window.App);
