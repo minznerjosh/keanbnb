@@ -14,11 +14,14 @@ module.exports = function(db) {
     studentId: String,
     room: String,
     email: String,
-    password: String
+    password: String,
+    rememberToken: String
   });
 
   // Relationships
-  User.hasOne('building', require('./building.js')(db), { reverse: 'students' });
+  User.hasMany('friends', User);
+  User.hasMany('pendingFriends', User);
+  User.hasOne('building', (db.models.building || require('./building.js')(db)), { reverse: 'students' });
 
   return User;
 };

@@ -20,6 +20,8 @@ app.use(orm.express(environment.mysql, {
   define: function(db, models) {
     models.user = require('./server/models/user.js')(db);
     models.building = require('./server/models/building.js')(db);
+    models.request = require('./server/models/request.js')(db);
+    models.friendRequest = require('./server/models/friendRequest.js')(db);
 
     db.sync();
 

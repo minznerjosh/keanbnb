@@ -1,0 +1,72 @@
+<div class="container">
+  <div class="page-header">
+    <h1>{{firstName}}'s KeanBnB</h1>
+  </div>
+
+  <div class="well well-lg">
+    <div class="row">
+      <div class="col-md-6">
+        {{#link-to 'panel.request' class="btn btn-primary btn-lg btn-block"}}Request Overnight{{/link-to}}
+      </div>
+      <div class="col-md-6">
+        {{#link-to 'panel.addFriend' class="btn btn-success btn-lg btn-block"}}Add Friend{{/link-to}}
+      </div>
+    </div>
+    <div class="row">
+      {{outlet}}
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-6">
+      {{#if friendActivity}}<h3>Friends</h3>{{/if}}
+
+      {{#if pendingFriends.length}}
+        <div class="panel panel-default">
+          <div class="panel-heading">Pending</div>
+          <table class="table">
+            <tr>
+              <td>Hey</td>
+            </tr>
+          </table>
+        </div>
+      {{/if}}
+
+      {{#if friends.length}}
+        <div class="panel panel-success">
+          <div class="panel-heading">Accepted</div>
+          <table class="table">
+            <tr>
+              <td>Hey</td>
+            </tr>
+          </table>
+        </div>
+      {{/if}}
+    </div>
+    <div class="col-md-6">
+      {{#if requests.lenght}}<h3>Upcoming Stays</h3>{{/if}}
+
+      {{#if pendingRequests.length}}
+        <div class="panel panel-default">
+          <div class="panel-heading">Pending</div>
+          <table class="table">
+            <tr>
+              <td>Hey</td>
+            </tr>
+          </table>
+        </div>
+      {{/if}}
+
+      {{#if approvedRequests.length}}
+        <div class="panel panel-success">
+          <div class="panel-heading">Approved</div>
+          <table class="table">
+            <tr>
+              <td>Hey</td>
+            </tr>
+          </table>
+        </div>
+      {{/if}}
+    </div>
+  </div>
+</div>

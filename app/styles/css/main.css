@@ -5912,6 +5912,12 @@ body {
 div#index #jumbotron_actions {
   margin-top: 40px;
 }
+div#index #jumbotron_actions #inputs {
+  display: inline-block;
+}
+div#index #jumbotron_actions #buttons {
+  display: inline-block;
+}
 div#register .row {
   margin-top: 10px;
 }

@@ -3,7 +3,7 @@
     <div class="container">
       <h1>This is KeanBnB.</h1>
       <p>Having overnight guests is a real pain at Kean University. KeanBnB is here to ease the pain.</p>
-      <p id="jumbotron_actions"><a class="btn btn-lg btn-primary" href="#">Log In</a> {{#link-to 'register' class="btn btn-success btn-lg"}}Register{{/link-to}}</p>
+      {{kbnb-login-form showForm=showLoginForm loginSubmit="login"}}
     </div>
   </div>
 

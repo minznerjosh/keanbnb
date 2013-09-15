@@ -8,13 +8,13 @@
       <label for="firstName">Name</label>
       <div class="row">
         <div class="col-md-2">
-          {{input class="form-control" id="firstName" placeholder="Connor" value=firstname}}
+          {{input class="form-control" id="firstName" placeholder="Connor" value=firstName}}
         </div>
         <div class="col-md-1">
           {{input class="form-control" id="mi" placeholder="M" value=mi}}
         </div>
         <div class="col-md-2">
-          {{input class="form-control" id="lastName" placeholder="Coffey" value=lastname}}
+          {{input class="form-control" id="lastName" placeholder="Coffey" value=lastName}}
         </div>
       </div>
     </div>
@@ -111,7 +111,7 @@
       </div>
     </div>
     <div class="form-group">
-      <a href="#" {{action submitRegistration}} class="btn btn-primary btn-lg">Register</a>
+      <button {{bind-attr disabled="isInvalid"}} {{action submitRegistration}} class="btn btn-primary btn-lg">Register</a>
     </div>
   </form>
 </div>

@@ -17,6 +17,9 @@
     building: DS.belongsTo('building'),
     room: DS.attr('string'),
     email: DS.attr('string'),
-    password: DS.attr('string')
+    password: DS.attr('string'),
+    requests: DS.hasMany('request'),
+    sentFriendRequests: DS.hasMany('friendRequest'),
+    receivedFriendRequests: DS.hasMany('friendRequest')
   });
 })(window.App);

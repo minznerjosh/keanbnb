@@ -1,47 +1,51 @@
 (function(App, io) {
   'use strict';
   App.SocketIOAdapter = DS.Store.extend({
-    // Properties
-    socket: io.connect('http://localhost:9000'),
-    pendingPromises: {},
-
     // Methods
-    init: function() {
-      this.listenForResponse();
-      this._super.call(this, arguments);
-    },
-    listenForResponse: function() {
+    findAll: function(store, type, sinceToken) {
       var self = this;
 
-      this.socket.on('response', function(data) {
-        var keys = Object.keys(data),
-          unresolvedPromise = self.pendingPromises[keys[0]];
-
-          if (unresolvedPromise) {
-            unresolvedPromise.resolve(data[keys[0]]);
+      return new Ember.RSVP.Promise(function(resolve, reject) {
+        self.socketWrapper.socket.emit('GET', { type: type.typeKey }, function(response) {
+          if (response.err) { reject(response.err); } else {
+            resolve(response.data[type.typeKey.pluralize()]);
           }
+        });
       });
     },
-    findAll: function(store, type, sinceToken) {
-      var self = this,
-        RSVP = Ember.RSVP,
-        typeKey = type.typeKey;
 
-      this.socket.emit('GET', { type: typeKey });
+    findMany: function(store, type, ids, owner) {
+      console.log('Hello from find many');
+    },
 
-      return new RSVP.Promise(function(resolve, reject) {
-        self.pendingPromises[typeKey.pluralize()] = {
-          resolve: resolve,
-          reject: reject
-        };
+    find: function(store, type, id) {
+      var self = this;
+
+      return new Ember.RSVP.Promise(function(resolve, reject) {
+        self.socketWrapper.socket.emit('GET', { type: type.typeKey, id: id }, function(response) {
+          if (response.err) { reject(response.err); } else {
+            resolve(response.data[type.typeKey]);
+          }
+        });
       });
     },
+
     createRecord: function(store, type, record) {
-      console.log(type);
+      var self = this;
+
+      return new Ember.RSVP.Promise(function(resolve, reject) {
+        self.socketWrapper.socket.emit('POST', { type: type.typeKey, data: record }, function(response) {
+          if (response.err) { reject(response.err); } else {
+            resolve(response.data);
+          }
+        });
+      });
     }
   });
 
   App.Store = DS.Store.extend({
     adapter: 'socketIO'
   });
+
+  App.inject('service', 'store', 'store:main');
 })(window.App, window.io);

@@ -1,0 +1,14 @@
+<form id="jumbotron_actions" class="form-inline">
+  <div id="inputs">
+    <div class="form-group">
+      {{input type="email" placeholder="email" class="form-control input-lg" value=values.email}}
+    </div>
+    <div class="form-group">
+      {{input type="password" placeholder="password" class="form-control input-lg" value=values.password}}
+    </div>
+  </div>
+  <div id="buttons">
+    <button {{action loginClick}} class="btn btn-lg btn-primary">Log In</button> 
+    {{#link-to 'register' class="btn btn-success btn-lg"}}Register{{/link-to}}
+  </div>
+</form>

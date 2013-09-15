@@ -1,7 +1,7 @@
 var q = require('q');
 
 module.exports = {
-  get: function(db, io) {
+  findAll: function(db) {
     var model = db.models.building,
       deferred = q.defer();
 
