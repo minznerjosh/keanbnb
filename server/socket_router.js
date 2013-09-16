@@ -8,6 +8,7 @@ module.exports = function(db, io) {
     socket.on('GET', function(data, cb) {
       var type = data.type,
         id = data.id,
+        query = data.query,
         controller = require('./controllers/' + type + '.js'),
         payload = {};
 
@@ -17,6 +18,12 @@ module.exports = function(db, io) {
 
           cb({ err: null, data: payload });
         }, function(err) { cb({ err: err }); });
+      } else if (query) {
+        controller.findQuery(db, query).then(function(data) {
+          payload[inflection.pluralize(type)] = data;
+
+          cb({ err: null, data: payload });
+        }, function(err) { cb({ err: err}); });
       } else {
         controller.findAll(db, id).then(function(data) {
           payload[inflection.pluralize(type)] = data;

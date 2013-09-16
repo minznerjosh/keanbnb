@@ -34,6 +34,18 @@ module.exports = {
     return deferred.promise;
   },
 
+  findQuery: function(db, query) {
+    var deferred = q.defer();
+
+    db.models.user.find(query, 1, function(err, users) {
+      if (err) { deferred.reject(err); } else {
+        deferred.resolve(users);
+      }
+    });
+
+    return deferred.promise;
+  },
+
   create: function(db, data) {
     var deferred = q.defer(),
       auth = require('../auth_handler.js'),

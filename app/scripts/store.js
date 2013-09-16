@@ -18,6 +18,18 @@
       console.log('Hello from find many');
     },
 
+    findQuery: function(store, type, query) {
+      var self = this;
+
+      return new Ember.RSVP.Promise(function(resolve, reject) {
+        self.socketWrapper.socket.emit('GET', { type: type.typeKey, query: query }, function(response) {
+          if (response.err) { reject(response.err); } else {
+            resolve(response.data[type.typeKey.pluralize()]);
+          }
+        });
+      });
+    },
+
     find: function(store, type, id) {
       var self = this;
 
@@ -36,7 +48,7 @@
       return new Ember.RSVP.Promise(function(resolve, reject) {
         self.socketWrapper.socket.emit('POST', { type: type.typeKey, data: record }, function(response) {
           if (response.err) { reject(response.err); } else {
-            resolve(response.data);
+            resolve(response.data[type.typeKey]);
           }
         });
       });

@@ -7,8 +7,15 @@
         return this.auth.restoreSession();
       }
     },
+
     model: function() {
       return this.get('auth.currentUser');
+    },
+
+    actions: {
+      error: function() {
+        this.transitionTo('index');
+      }
     }
   });
 })(window.App);
