@@ -19,8 +19,6 @@ module.exports = function(db) {
   });
 
   // Relationships
-  User.hasMany('friends', User);
-  User.hasMany('pendingFriends', User);
   User.hasOne('building', (db.models.building || require('./building.js')(db)), { reverse: 'students' });
 
   return User;

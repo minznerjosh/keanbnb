@@ -9,6 +9,7 @@ module.exports = function(db, io) {
       var type = data.type,
         id = data.id,
         query = data.query,
+        ids = data.ids,
         controller = require('./controllers/' + type + '.js'),
         payload = {};
 
@@ -24,6 +25,12 @@ module.exports = function(db, io) {
 
           cb({ err: null, data: payload });
         }, function(err) { cb({ err: err}); });
+      } else if (ids) {
+        controller.findMany(db, ids).then(function(data) {
+          payload[inflection.pluralize(type)] = data;
+
+          cb({ err: null, data: payload });
+        }, function(err) { cb({ err: err }); });
       } else {
         controller.findAll(db, id).then(function(data) {
           payload[inflection.pluralize(type)] = data;
@@ -39,10 +46,33 @@ module.exports = function(db, io) {
         payload = {};
 
       controller.create(db, data.data).then(function(data) {
-        payload[type] = data;
+        var key = (data instanceof Array) ? inflection.pluralize(type) : type;
+
+        payload[key] = data;
 
         cb({ err: null, data: payload });
       }, function(err) { cb({ err: err }); });
+    });
+
+    socket.on('PUT', function(data, respond) {
+      var type = data.type,
+        controller = require('./controllers/' + type + '.js'),
+        payload = {};
+
+      controller.update(db, data.id, data.data).then(function(data) {
+        payload[type] = data;
+
+        respond({ err: null, data: payload });
+      }, function(err) { respond({ err: err }); });
+    });
+
+    socket.on('DELETE', function(data, respond) {
+      var type = data.type,
+        controller = require('./controllers/' + type + '.js');
+
+      controller.deleteRecord(db, data.id).then(function(data) {
+        respond({ err: null, data: null });
+      }, function(err) { respond({ err: err }); });
     });
 
     socket.on('LOGIN', function(data, cb) {

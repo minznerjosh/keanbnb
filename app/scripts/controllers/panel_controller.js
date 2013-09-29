@@ -10,17 +10,34 @@
     friendActivity: Ember.computed.or('model.pendingFriends.length', 'model.friends.length'),
 
     // Methods
-    getRecordsWithStatus: function(recordsName, status) {
-      var records = this.get('model.' + recordsName),
-        filteredRecords = [];
+    actions: {
+      approveFriend: function(request) {
+        request.set('accepted', true);
+        request.save().then(function(request) {
+          console.log(request.get('requester'));
+        });
+      },
 
-      records.forEach(function(record) {
-        if (record.get('status') === status) {
-          filteredRecords.push(record);
-        }
-      });
+      unfriend: function(friend) {
+        var receivedFriendRequests = this.get('model.receivedFriendRequests'),
+          sentFriendRequests = this.get('model.sentFriendRequests'),
+          foundRequest;
 
-      return filteredRecords;
+        receivedFriendRequests.forEach(function(request) {
+          if (request.get('requester') === friend) {
+            foundRequest = request;
+          }
+        });
+
+        sentFriendRequests.forEach(function(request) {
+          if (request.get('requestee') === friend) {
+            foundRequest = request;
+          }
+        });
+
+        foundRequest.deleteRecord();
+        foundRequest.save();
+      }
     }
   });
 })(window.App);

@@ -1,19 +1,52 @@
-var q = require('q');
+var q = require('q'),
+  serializer = require('../serializers/friendRequest.js');
 
 module.exports = {
   create: function(db, data) {
-    var deferred = q.defer(),
-      FriendRequest = db.models.friendRequest;
+    var FriendRequest = db.models.friendRequest,
+      serializeResult = function(request) {
+        return serializer.serialize(request);
+      };
 
-    data.requester_id = data.requester;
-    data.requestee_id = data.requestee;
+    return serializer.createModel(FriendRequest, data)
+      .then(serializeResult);
+  },
 
-    FriendRequest.create([data], function(err, friendRequests) {
-      if (err) { deferred.reject(err); } else {
-        deferred.resolve(friendRequests[0]);
-      }
-    });
+  update: function(db, id, data) {
+    var getRequest = q.nbind(db.models.friendRequest.get, db.models.friendRequest),
+      updateRequest = function(request) {
+        return serializer.updateModel(request, data).save();
+      },
+      serializeRequest = function(request) {
+        return serializer.serialize(request);
+      };
 
-    return deferred.promise;
+    return getRequest(id)
+      .then(updateRequest)
+      .then(serializeRequest);
+  },
+
+  deleteRecord: function(db, id) {
+    var getRequest = q.nbind(db.models.friendRequest.get, db.models.friendRequest),
+      deleteRequest = function(request) {
+        return q.npost(request, 'remove', []);
+      };
+
+    return getRequest(id)
+      .then(deleteRequest);
+  },
+
+  findMany: function(db, ids) {
+    var getRequests = q.nbind(db.models.friendRequest.get, db.models.friendRequest),
+      normalizeData = function(requests) {
+        if (!(requests instanceof Array)) {
+          requests = [requests];
+        }
+
+        return serializer.serializeMany(requests);
+      };
+
+    return getRequests(ids)
+      .then(normalizeData);
   }
 };

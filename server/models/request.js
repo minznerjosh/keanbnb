@@ -6,6 +6,6 @@ module.exports = function(db) {
   });
 
   // Relationships
-  //Request.hasOne('resident', (db.models.user || require('./user.js')(db)), { reverse: 'requests' });
-  Request.hasOne('guest', (db.models.user || require('./user.js')(db)), { reverse: 'requests' });
+  Request.hasOne('resident', (db.models.user || require('./user.js')(db)), { reverse: 'guestRequests' });
+  Request.hasOne('guest', (db.models.user || require('./user.js')(db)), { reverse: 'residentRequests' });
 };

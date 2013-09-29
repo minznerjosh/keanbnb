@@ -25,9 +25,32 @@
         <div class="panel panel-default">
           <div class="panel-heading">Pending</div>
           <table class="table">
-            <tr>
-              <td>Hey</td>
-            </tr>
+            {{#each request in receivedFriendRequests}}
+              {{#unless request.accpeted}}
+                {{#with request.requester}}
+                  <tr>
+                    <td>
+                      {{firstName}} {{lastName}}
+                      <span class="pull-right">
+                        <button {{action approveFriend request}} class="btn btn-xs btn-success">Accept</button>
+                        <button class="btn btn-xs btn-danger">Reject</button>
+                      </span>
+                    </td>
+                  </tr>
+                {{/with}}
+              {{/unless}}
+            {{/each}}
+            {{#each sentFriendRequests}}
+              {{#unless accpeted}}
+                {{#with requestee}}
+                  <tr>
+                    <td>
+                      {{firstName}} {{lastName}}
+                    </td>
+                  </tr>
+                {{/with}}
+              {{/unless}}
+            {{/each}}
           </table>
         </div>
       {{/if}}
@@ -36,9 +59,17 @@
         <div class="panel panel-success">
           <div class="panel-heading">Accepted</div>
           <table class="table">
-            <tr>
-              <td>Hey</td>
-            </tr>
+            {{#each friends}}
+              <tr>
+                <td>
+                  {{firstName}} {{lastName}}
+                  <span class="pull-right">
+                    <button class="btn btn-xs btn-primary">Request Overnight</button>
+                    <button {{action unfriend this}} class="btn btn-xs btn-danger">Unfriend</button>
+                  </span>
+                </td>
+              </tr>
+            {{/each}}
           </table>
         </div>
       {{/if}}

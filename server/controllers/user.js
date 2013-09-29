@@ -2,36 +2,40 @@ var q = require('q');
 
 module.exports = {
   find: function(db, id) {
-    var deferred = q.defer();
+    var getId = function(model) {
+        return model.id;
+      },
+      getUser = q.nbind(db.models.user.get, db.models.user),
+      getRelationships = function(user) {
+        return q.all([
+          user,
+          q.npost(user, 'getResidentRequests', []),
+          q.npost(user, 'getGuestRequests', []),
+          q.npost(user, 'getSentFriendRequests', []),
+          q.npost(user, 'getReceivedFriendRequests', [])
+        ]);
+      },
+      serializeUser = function(userAndRelationships) {
+        var user = userAndRelationships[0],
+          residentRequests = userAndRelationships[1],
+          guestRequests = userAndRelationships[2],
+          sentFriendRequests = userAndRelationships[3],
+          receivedFriendRequests = userAndRelationships[4];
 
-    db.models.user.get(id, function(err, user) {
-      if (err) { deferred.reject(err); } else {
-        delete user.password;
+        user.residentRequests = residentRequests.map(getId);
 
-        user.request_ids = [];
-        user.peningFriend_ids = [];
+        user.guestRequests = guestRequests.map(getId);
 
-        user.getRequests(function(err, requests) {
-          if (err) { deferred.reject(err); } else {
-            requests.forEach(function(request) {
-              user.request_ids.push(request.id);
-            });
-          }
-        });
+        user.sentFriendRequests = sentFriendRequests.map(getId);
 
-        user.getPendingFriends(function(err, pendingFriends) {
-          if (err) { deferred.reject(err); } else {
-            pendingFriends.forEach(function(pendingFriend) {
-              user.pendingFriends_ids.push(pendingFriend.id);
-            });
-          }
-        });
+        user.receivedFriendRequests = receivedFriendRequests.map(getId);
 
-        deferred.resolve(user);
-      }
-    });
+        return user;
+      };
 
-    return deferred.promise;
+    return getUser(id)
+      .then(getRelationships)
+      .then(serializeUser);
   },
 
   findQuery: function(db, query) {
