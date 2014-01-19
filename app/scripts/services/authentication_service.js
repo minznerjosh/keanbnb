@@ -1,7 +1,7 @@
 (function(App) {
   App.AuthenticationService = Ember.Object.extend({
     // Properties
-    socket: null,
+    socketBinding: 'App.socket',
     currentUser: null,
     localStorage: window.localStorage,
     rememberToken: function(key, value) {
@@ -14,8 +14,6 @@
 
     // Methods
     init: function() {
-      this.set('socket', this.socketWrapper.socket);
-
       if (this.get('rememberToken')) { this.restoreSession(); }
     },
 
@@ -27,9 +25,9 @@
 
         if (!token) { reject('this browser is not linked to a user'); }
 
-        self.socket.emit('RESTORE', { rememberToken: token }, function(response) {
+        self.get('socket').emit('RESTORE', { rememberToken: token }, function(response) {
           if (response.err) { reject(response.err); } else {
-            self.store.find('user', response.userId).then(function(user) {
+            App.User.find(response.userId).then(function(user) {
               self.set('currentUser', user);
               resolve(user);
             }, function(err) { reject(err); });
@@ -40,16 +38,19 @@
 
     login: function(email, password) {
       var self = this,
-        socket = this.socket;
+        socket = this.get('socket');
 
       return new Ember.RSVP.Promise(function(resolve, reject) {
         socket.emit('LOGIN', { email: email, password: password }, function(response) {
           if (response.err) { reject(response.err); } else {
-            self.store.find('user', response.userId).then(function(user) {
+            /*App.User.fetch(response.userId).then(function(user) {
               self.set('rememberToken', response.rememberToken);
               self.set('currentUser', user);
               resolve(user);
-            }, function(err) { reject(err); });
+            }, function(err) { reject(err); });*/
+            App.User.fetch(1).then(function(user) {
+              console.log(user.get('firstName'));
+            });
           }
         });
       });

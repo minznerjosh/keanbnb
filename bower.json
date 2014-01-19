@@ -7,6 +7,7 @@
     "jquery": "2.0.x",
     "handlebars.js": "1.0.x",
     "ember.js": "1.0.x",
+    "ember-model": "0.0.x"
     "ember-data": "4d717bff53f8c93bedbe74e7965a4f439882e259"
   },
   "devDependencies": {

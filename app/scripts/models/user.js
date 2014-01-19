@@ -1,32 +1,33 @@
 (function(App) {
   'use strict';
 
-  App.User = DS.Model.extend({
+  var attr = Ember.attr,
+    hasMany = Ember.hasMany,
+    belongsTo = Ember.belongsTo;
+
+  App.User = Ember.Model.extend({
     // Properties
-    firstName: DS.attr('string'),
-    mi: DS.attr('string'),
-    lastName: DS.attr('string'),
-    street1: DS.attr('string'),
-    street2: DS.attr('string'),
-    city: DS.attr('string'),
-    state: DS.attr('string'),
-    zip: DS.attr('string'),
-    homePhone: DS.attr('string'),
-    cellPhone: DS.attr('string'),
-    isResident: DS.attr('boolean'),
-    studentId: DS.attr('string'),
-    building: DS.belongsTo('building'),
-    room: DS.attr('string'),
-    email: DS.attr('string'),
-    password: DS.attr('string'),
-    requests: DS.hasMany('request'),
-    sentFriendRequests: DS.hasMany('friendRequest', { async: true, inverse: 'requester' }),
-    receivedFriendRequests: DS.hasMany('friendRequest', { async: true, inverse: 'requestee' }),
+    firstName: attr(),
+    mi: attr(),
+    lastName: attr(),
+    street1: attr(),
+    street2: attr(),
+    city: attr(),
+    state: attr(),
+    zip: attr(),
+    homePhone: attr(),
+    cellPhone: attr(),
+    isResident: attr(),
+    studentId: attr(),
+    building: belongsTo('App.Building', { key: 'building' }),
+    room: attr(),
+    email: attr(),
+    password: attr(),
+    requests: hasMany('App.Request', { key: 'requests' }),
+    sentFriendRequests: hasMany('App.FriendRequest', { key: 'sentFriendRequests' }),
+    receivedFriendRequests: hasMany('App.FriendRequest', { key: 'receivedFriendRequests' }),
     friends: function() {
       return this.getFriendsIfAccepted(true);
-    }.property('sentFriendRequests.@each.requestee', 'sentFriendRequests.@each.accepted', 'receivedFriendRequests.@each.requester', 'receivedFriendRequests.@each.accepted'),
-    pendingFriends: function() {
-      return this.getFriendsIfAccepted(false);
     }.property('sentFriendRequests.@each.requestee', 'sentFriendRequests.@each.accepted', 'receivedFriendRequests.@each.requester', 'receivedFriendRequests.@each.accepted'),
 
     // Methods

@@ -1,23 +1,17 @@
 var App = window.App = Ember.Application.create();
 
-App.SocketWrapper = Ember.Object.extend({
-  // Properties
-  socket: null,
+Ember.Application.initializer({
+  name: 'socket',
 
-  // Methods
-  init: function() {
-    this.set('socket', window.io.connect('http://localhost:9000'));
+  initialize: function(container, application) {
+    application.set('socket', window.io.connect('http://localhost:9000'));
   }
 });
-
-App.register('socket:main', App.SocketWrapper);
-App.inject('adapter:socketIO', 'socketWrapper', 'socket:main');
-App.inject('service:authentication', 'socketWrapper', 'socket:main');
 
 /* Order and include as you please. */
 require('scripts/services/*');
 require('scripts/controllers/*');
-require('scripts/store');
+require('scripts/adapter');
 require('scripts/models/*');
 require('scripts/routes/*');
 require('scripts/views/*');

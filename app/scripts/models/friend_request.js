@@ -1,9 +1,12 @@
 (function(App) {
   'use strict';
 
-  App.FriendRequest = DS.Model.extend({
-    accepted: DS.attr('boolean'),
-    requester: DS.belongsTo('user', { async: true, inverse: 'sentFriendRequests' }),
-    requestee: DS.belongsTo('user', { async: true, inverse: 'receivedFriendRequests' })
+  var attr = Ember.attr,
+    belongsTo = Ember.belongsTo;
+
+  App.FriendRequest = Ember.Model.extend({
+    accepted: attr(),
+    requester: belongsTo('App.User', { key: 'requester' }),
+    requestee: belongsTo('App.User', { key: 'requestee' })
   });
 })(window.App);

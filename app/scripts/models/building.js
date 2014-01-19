@@ -1,8 +1,11 @@
 (function(App) {
   'use strict';
 
-  App.Building = DS.Model.extend({
-    name: DS.attr('string'),
-    students: DS.hasMany('user')
+  var attr = Ember.attr,
+    hasMany = Ember.hasMany;
+
+  App.Building = Ember.Model.extend({
+    name: attr(),
+    students: hasMany('App.User', { key: 'students' })
   });
 })(window.App);
